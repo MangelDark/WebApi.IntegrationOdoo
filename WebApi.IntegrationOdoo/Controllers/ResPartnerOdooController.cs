@@ -48,10 +48,11 @@ namespace WebApi.IntegrationOdoo.Controllers
             var result = await _service.Update_ResPartner(model);
             return Ok(result);
         }
-        [HttpDelete]
-        public async Task<IActionResult> Delete_ResPartner(ResPartnerViewModel model)
+        [HttpDelete("id")]
+        public async Task<IActionResult> Delete_ResPartner(long id)
+
         {
-            var result = await _service.Delete_ResPartner(model);
+            var result = await _service.Delete_ResPartner(id);
             return Ok(result);
         }
 

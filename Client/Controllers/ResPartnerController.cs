@@ -229,7 +229,7 @@ namespace Client.Controllers
             try
 
             {
-                ResPartnerViewModel resp = null;
+                var result = false;
                 using (var client = new HttpClient())
                 {
 
@@ -244,19 +244,23 @@ namespace Client.Controllers
                     //Needed to setup the body of the request
                     //StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
                     //HTTP GET
-                    var responseTask = client.DeleteAsync(string.Format("ResPartnerOdoo/{0}", id));
+                    var responseTask = client.DeleteAsync(string.Format("ResPartnerOdoo/id?id={0}", id));
                     responseTask.Wait();
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        //JavaScriptSerializer ser = new JavaScriptSerializer();
-                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
-                        resp = JsonConvert.DeserializeObject<ResPartnerViewModel>(await result.Content.ReadAsStringAsync());
-                    }
+                    result = responseTask.Result.IsSuccessStatusCode;
+                  
 
                 }
-                return View(model: resp);
+                if (result)
+                {
+                    return View("Index");
 
+                }
+                else
+                {
+                    return View();
+                }
+
+                
             }
             catch
             {

@@ -112,12 +112,12 @@ namespace WebApi.IntegrationOdoo.Service
                 return false;
             }
         }
-        public async Task<bool> Delete_ResPartner(ResPartnerViewModel model)
+        public async Task<bool> Delete_ResPartner(long id)
         {
 
             var request = new ResPartnerOdooModel()
             {
-                Id = model.Id       
+                Id = id    
             };
 
             var odooClient = new OdooClient(TestConfig);
