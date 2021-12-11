@@ -96,9 +96,42 @@ namespace Client.Controllers
         }
 
         // GET: ResPartnerController/Edit/5
-        public ActionResult Edit(int id)
+        public async  Task<ActionResult> Edit(long id)
         {
-            return View();
+            try
+
+            {
+                ResPartnerViewModel resp = null;
+                using (var client = new HttpClient())
+                {
+
+
+                   
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //HTTP GET
+                    var uriString = string.Format(Convert.ToString(id));
+                    string json = JsonConvert.SerializeObject(uriString);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+                    var responseTask = client.PostAsync("ResPartnerOdoo", data);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                        resp = JsonConvert.DeserializeObject<ResPartnerViewModel>(await result.Content.ReadAsStringAsync());
+                    }
+
+                }
+                return View(model: resp);
+
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: ResPartnerController/Edit/5
@@ -107,7 +140,9 @@ namespace Client.Controllers
         public async  Task<ActionResult> Edit(int id, ResPartnerViewModel collection)
         {
             try
+
             {
+                ResPartnerViewModel resp = null;
                 using (var client = new HttpClient())
                 {
 
@@ -129,11 +164,11 @@ namespace Client.Controllers
                     {
                         //JavaScriptSerializer ser = new JavaScriptSerializer();
                         //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
-                        var resp = JsonConvert.DeserializeObject<List<ResPartnerViewModel>>(await result.Content.ReadAsStringAsync());
+                        resp = JsonConvert.DeserializeObject<ResPartnerViewModel>(await result.Content.ReadAsStringAsync());
                     }
 
                 }
-                return View();
+                return View(model: resp);
 
             }
             catch

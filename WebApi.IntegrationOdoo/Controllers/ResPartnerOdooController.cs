@@ -23,14 +23,14 @@ namespace WebApi.IntegrationOdoo.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<IActionResult> Get_All()
+        public async Task<IActionResult> Get()
         {
             var result = await _service.Get_All();
             return Ok(result);
 
         }
-        [HttpGet("Id")]
-        public async Task<IActionResult> Get_Id(long Id)
+        [HttpPost("Id")]
+        public async Task<IActionResult> GetId(long Id)
         {
             var result = await _service.Get_For_Id(Id);
             return Ok(result);
