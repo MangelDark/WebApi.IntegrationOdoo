@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using PortaCapena.OdooJsonRpcClient;
+using PortaCapena.OdooJsonRpcClient.Extensions;
 using PortaCapena.OdooJsonRpcClient.Models;
 using PortaCapena.OdooJsonRpcClient.Shared;
 using PortaCapena.OdooJsonRpcClient.Shared.Models;
@@ -102,6 +103,29 @@ namespace WebApi.IntegrationOdoo.Service
             var customer = await odooClient.UpdateAsync(request,model.Id);
 
             customer.Succeed.Should().BeTrue();
+            if (customer.Succeed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public async Task<bool> Delete_ResPartner(ResPartnerViewModel model)
+        {
+
+            var request = new ResPartnerOdooModel()
+            {
+                Id = model.Id       
+            };
+
+            var odooClient = new OdooClient(TestConfig);
+
+            var customer = await odooClient.DeleteAsync(request.OdooTableName(),request.Id);
+
+            customer.Succeed.Should().BeTrue();
+            customer.Error.Should().BeNull();
             if (customer.Succeed)
             {
                 return true;

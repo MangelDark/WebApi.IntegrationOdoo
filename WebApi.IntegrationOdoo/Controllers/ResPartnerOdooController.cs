@@ -29,7 +29,7 @@ namespace WebApi.IntegrationOdoo.Controllers
             return Ok(result);
 
         }
-        [HttpPost("Id")]
+        [HttpGet("Id")]
         public async Task<IActionResult> GetId(long Id)
         {
             var result = await _service.Get_For_Id(Id);
@@ -46,6 +46,12 @@ namespace WebApi.IntegrationOdoo.Controllers
         public async Task<IActionResult> Update_ResPartner([FromBody] ResPartnerViewModel model)
         {
             var result = await _service.Update_ResPartner(model);
+            return Ok(result);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete_ResPartner(ResPartnerViewModel model)
+        {
+            var result = await _service.Delete_ResPartner(model);
             return Ok(result);
         }
 

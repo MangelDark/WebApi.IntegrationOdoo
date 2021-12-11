@@ -109,12 +109,13 @@ namespace Client.Controllers
                    
                     client.BaseAddress = new Uri("https://localhost:5001/api/");
                     //HTTP GET
-                    var uriString = string.Format(Convert.ToString(id));
-                    string json = JsonConvert.SerializeObject(uriString);
+                    //var uriString = string.Format(Convert.ToString(id));
+                    //string json = JsonConvert.SerializeObject(uriString);
 
                     //Needed to setup the body of the request
-                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-                    var responseTask = client.PostAsync("ResPartnerOdoo", data);
+                    //StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var responseTask = client.GetAsync(string.Format("ResPartnerOdoo/Id?Id={0}", id));
                     responseTask.Wait();
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
@@ -178,19 +179,84 @@ namespace Client.Controllers
         }
 
         // GET: ResPartnerController/Delete/5
-        public ActionResult Delete(int id)
+        public async  Task<ActionResult> Delete(long id)
         {
-            return View();
+
+            try
+
+            {
+                ResPartnerViewModel resp = null;
+                using (var client = new HttpClient())
+                {
+
+
+
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //HTTP GET
+                    //var uriString = string.Format(Convert.ToString(id));
+                    //string json = JsonConvert.SerializeObject(uriString);
+
+                    //Needed to setup the body of the request
+                    //StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var responseTask = client.GetAsync(string.Format("ResPartnerOdoo/Id?Id={0}", id));
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                        resp = JsonConvert.DeserializeObject<ResPartnerViewModel>(await result.Content.ReadAsStringAsync());
+                    }
+
+                }
+                return View(model: resp);
+
+            }
+            catch
+            {
+                return View("Index");
+            }
+
+
         }
 
         // POST: ResPartnerController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
             try
+
             {
-                return RedirectToAction(nameof(Index));
+                ResPartnerViewModel resp = null;
+                using (var client = new HttpClient())
+                {
+
+
+                    //collection.Id = id;
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //The data that needs to be sent. Any object works.
+
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    //string json = JsonConvert.SerializeObject(collection);
+
+                    //Needed to setup the body of the request
+                    //StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+                    //HTTP GET
+                    var responseTask = client.DeleteAsync(string.Format("ResPartnerOdoo/{0}", id));
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                        resp = JsonConvert.DeserializeObject<ResPartnerViewModel>(await result.Content.ReadAsStringAsync());
+                    }
+
+                }
+                return View(model: resp);
+
             }
             catch
             {
