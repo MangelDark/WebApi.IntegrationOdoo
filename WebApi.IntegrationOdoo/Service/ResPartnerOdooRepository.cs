@@ -48,14 +48,17 @@ namespace WebApi.IntegrationOdoo.Service
 
 
         public async Task<bool> Create_ResPartner(ResPartnerViewModel model)
-        {
-           
-
-            //CompanyTypeResPartnerOdooEnum? test = CompanyTypeResPartnerOdooEnum.Company;
-
+        {          
             var request = OdooDictionaryModel.Create(() => new ResPartnerOdooModel()
             {
                 Name = model.Name,
+                Title = model.Title,
+                Website = model.Website,
+                Comment = model.Comment,
+                CreditLimit = model.CreditLimit,
+                Email = model.Email,
+                Phone = model.Phone,
+                Mobile = model.Mobile,
                 City = model.City,
                 Zip = model.Zip,
                 Vat = model.Vat,
@@ -76,6 +79,37 @@ namespace WebApi.IntegrationOdoo.Service
                 return false;
             }
         }
+        public async Task<bool> Update_ResPartner(ResPartnerViewModel model)
+        {
+            var request = OdooDictionaryModel.Create(() => new ResPartnerOdooModel()
+            {
+                Name = model.Name,
+                Title = model.Title,
+                Website = model.Website,
+                Comment = model.Comment,
+                CreditLimit = model.CreditLimit,
+                Email = model.Email,
+                Phone = model.Phone,
+                Mobile = model.Mobile,
+                City = model.City,
+                Zip = model.Zip,
+                Vat = model.Vat,
+                Street = model.Street,
+            });
 
+            var odooClient = new OdooClient(TestConfig);
+
+            var customer = await odooClient.UpdateAsync(request,model.Id);
+
+            customer.Succeed.Should().BeTrue();
+            if (customer.Succeed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

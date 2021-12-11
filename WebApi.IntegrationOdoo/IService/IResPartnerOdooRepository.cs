@@ -12,5 +12,6 @@ namespace WebApi.IntegrationOdoo.IService
         Task<IEnumerable<ResPartnerOdooModel>> Get_All();
         Task<ResPartnerOdooModel> Get_For_Id(long Id);
         Task<bool> Create_ResPartner(ResPartnerViewModel model);
+        Task<bool> Update_ResPartner(ResPartnerViewModel model);
     }
 }

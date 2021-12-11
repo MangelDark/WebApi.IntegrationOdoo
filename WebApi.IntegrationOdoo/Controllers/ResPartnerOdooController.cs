@@ -42,5 +42,12 @@ namespace WebApi.IntegrationOdoo.Controllers
             return Ok(result);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update_ResPartner([FromBody] ResPartnerViewModel model)
+        {
+            var result = await _service.Update_ResPartner(model);
+            return Ok(result);
+        }
+
     }
 }

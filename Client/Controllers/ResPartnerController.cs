@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Client.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Controllers
@@ -10,9 +14,33 @@ namespace Client.Controllers
     public class ResPartnerController : Controller
     {
         // GET: ResPartnerController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            List<ResPartnerViewModel> data = null;
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //HTTP GET
+                    var responseTask = client.GetAsync("ResPartnerOdoo");
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                        data = JsonConvert.DeserializeObject<List<ResPartnerViewModel>>(await result.Content.ReadAsStringAsync());
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+               
+                return View(data);
+            }
         }
 
         // GET: ResPartnerController/Details/5
@@ -30,11 +58,36 @@ namespace Client.Controllers
         // POST: ResPartnerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async  Task<ActionResult> Create(ResPartnerViewModel collection)
         {
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                using (var client = new HttpClient())
+                {
+                 
+                        client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //The data that needs to be sent. Any object works.
+             
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    string json = JsonConvert.SerializeObject(collection);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+                    //HTTP GET
+                    var responseTask = client.PostAsync("ResPartnerOdoo", data);
+                        responseTask.Wait();
+                        var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                      var  resp = JsonConvert.DeserializeObject<List<ResPartnerViewModel>>(await result.Content.ReadAsStringAsync());
+                    }
+
+                }
+                return View();
+
             }
             catch
             {
@@ -51,11 +104,37 @@ namespace Client.Controllers
         // POST: ResPartnerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async  Task<ActionResult> Edit(int id, ResPartnerViewModel collection)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                using (var client = new HttpClient())
+                {
+
+
+                    collection.Id = id;
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
+                    //The data that needs to be sent. Any object works.
+
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    string json = JsonConvert.SerializeObject(collection);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json,Encoding.UTF8, "application/json");
+                    //HTTP GET
+                    var responseTask = client.PutAsync("ResPartnerOdoo", data);
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //JavaScriptSerializer ser = new JavaScriptSerializer();
+                        //var records =  ser.Deserialize<List<ProductModel>>(jsonData);
+                        var resp = JsonConvert.DeserializeObject<List<ResPartnerViewModel>>(await result.Content.ReadAsStringAsync());
+                    }
+
+                }
+                return View();
+
             }
             catch
             {

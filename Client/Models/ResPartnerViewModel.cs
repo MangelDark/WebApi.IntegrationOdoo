@@ -2,28 +2,21 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using PortaCapena.OdooJsonRpcClient.Attributes;
-using PortaCapena.OdooJsonRpcClient.Converters;
-using PortaCapena.OdooJsonRpcClient.Models;
 
-namespace WebApi.IntegrationOdoo.ViewModels
+
+namespace Client.Models
 {
- 
+
     public class ResPartnerViewModel 
     {
         [JsonProperty("id")]
         public long Id { get; set; }
-
         [JsonProperty("name")]
-        public string Name { get; set; }
-
-    
+        public string Name { get; set; }  
 
         // res.partner.title
         [JsonProperty("title")]
         public long? Title { get; set; }
-
-       
 
         [JsonProperty("vat")]
         public string Vat { get; set; }
@@ -34,12 +27,9 @@ namespace WebApi.IntegrationOdoo.ViewModels
 
         [JsonProperty("comment")]
         public string Comment { get; set; }
-
-      
-
+   
         [JsonProperty("credit_limit")]
         public double? CreditLimit { get; set; }
-
 
         [JsonProperty("street")]
         public string Street { get; set; }
@@ -63,9 +53,7 @@ namespace WebApi.IntegrationOdoo.ViewModels
 
         [JsonProperty("mobile")]
         public string Mobile { get; set; }
-
-
-       
+    
     }
 
 
