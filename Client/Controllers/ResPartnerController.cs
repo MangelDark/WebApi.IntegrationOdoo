@@ -224,7 +224,7 @@ namespace Client.Controllers
         // POST: ResPartnerController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id, ResPartnerViewModel model)
         {
             try
 
@@ -246,19 +246,19 @@ namespace Client.Controllers
                     //HTTP GET
                     var responseTask = client.DeleteAsync(string.Format("ResPartnerOdoo/id?id={0}", id));
                     responseTask.Wait();
-                    result = responseTask.Result.IsSuccessStatusCode;
+                    result =  responseTask.Result.IsSuccessStatusCode;
                   
 
                 }
-                if (result)
+                if (result == false)
                 {
-                    return View("Index");
+                    ViewBag.message = "Este cliente no se pude eliminar porque tiene una jerarquia.";
+                    return View(model);
+                }
 
-                }
-                else
-                {
-                    return View();
-                }
+                return RedirectToAction("Index");
+
+
 
                 
             }
