@@ -495,8 +495,9 @@ namespace PortaCapena.OdooJsonRpcClient.Shared.Models
     {
         [EnumMember(Value = "en_US")]
         EnglishUS = 1,
+        [EnumMember(Value = "es_MX")]
+        SpanishMX = 2,
     }
-
 
     // When printing documents and exporting/importing data, time values are computed according to this timezone.
     // If the timezone is not set, UTC (Coordinated Universal Time) is used.

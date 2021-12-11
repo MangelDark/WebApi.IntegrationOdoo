@@ -32,7 +32,7 @@ namespace WebApi.IntegrationOdoo
             services.AddSingleton<IAccountOdooRepository, AccountOdooRepository>();
             services.AddSingleton<ICustomerOdooRepository, CustomerOdooRepository>();
             services.AddSingleton<ISaleOrdenOdooRepository, SaleOrdenOdooRepository>();
-
+            services.AddSingleton<IResPartnerOdooRepository, ResPartnerOdooRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
