@@ -29,6 +29,19 @@ namespace WebApi.IntegrationOdoo.Service
 
             return result.Value;
         }
+        //public async Task<IEnumerable<SaleOrderOdooModel>> Get_All_SalesOrden()
+        //{
+        //    var repo = new AccountRepository();
+
+        //    var result = await repo.Query().ToListAsync();
+
+        //    result.Error.Should().BeNull();
+        //    result.Succeed.Should().BeTrue();
+        //    result.Value.Should().NotBeNull().And.NotBeEmpty();
+
+        //    return result.Value;
+        //}
+
 
         public async Task<AccountAccountOdooModel> Get_For_Id(long Id)
         {

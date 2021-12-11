@@ -8,19 +8,21 @@ using System.Text;
 
 namespace PortaCapena.OdooJsonRpcClient.Shared.Models
 {
-    [OdooTableName("customer.customer")]
+    [OdooTableName("customers.customers")]
     [JsonConverter(typeof(OdooModelConverter))]
 
     public class CustomersCustomerOdooModel : IOdooModel
     {
-        public long Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        [JsonProperty("customer_id")]
+        public long? CustomerId { get; set; }
         [JsonProperty("name")]
         public string  Name { get; set; }
         [JsonProperty("vat")]
         public string Vat { get; set; }
         [JsonProperty("phone")]
         public string Phone { get; set; }
+        [JsonProperty("id")]
 
-
+        public long Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
